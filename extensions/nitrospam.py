@@ -38,11 +38,11 @@ class SpamDetect(commands.Cog):
 
 		return (content, image_details)
 
-	async def send_message_report(self, reporting, message, include_image=True):
+	async def send_message_report(self, reporting, message):
 		images = self.image_attachments(message)
 		description = message.content.strip()
 
-		if include_image and images:
+		if images:
 			files = [await image.to_file() for image in images]
 			await reporting.send(content=description or None, files=files)
 			return
