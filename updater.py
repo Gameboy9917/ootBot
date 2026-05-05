@@ -9,6 +9,7 @@ import asyncio
 class BotConfig:
 	def __init__(self):
 		self.config = configparser.ConfigParser()
+		self.update_task = None
 		self.config.read('config.txt')
 		if not self.config.sections():
 			# no config available
@@ -66,9 +67,9 @@ class BotConfig:
 				print(f'{key} = {value}')
 			print('')
 
-	def create_update_timer(self, bot):
+	def create_update_timer(self):
 		if (self.get('GitHub', 'is_repo') == 'y'):
-			bot.loop.create_task(self.timer())
+			self.update_task = asyncio.create_task(self.timer())
 
 	async def timer(self):
 		while True:
