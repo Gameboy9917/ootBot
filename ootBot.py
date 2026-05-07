@@ -12,20 +12,23 @@ config = BotConfig()
 
 discord_token = config.get('Bot Settings', 'discord_token')
 
+class OotBot(commands.Bot):
+	async def setup_hook(self):
+		await self.load_extension('extensions.roles')
+		#await self.load_extension('extensions.twitch')
+		await self.load_extension('extensions.faq')
+		await self.load_extension('extensions.help')
+		await self.load_extension('extensions.nitrospam')
+		config.create_update_timer()
+
+
 #create bot
 intents = discord.Intents.default()
 intents.message_content = True
-client = commands.Bot(command_prefix = '!', intents=intents)
+client = OotBot(command_prefix = '!', intents=intents)
 
 #remove default help command
 client.remove_command('help')
-
-#load custom extensions
-client.load_extension('extensions.roles')
-#client.load_extension('extensions.twitch')
-client.load_extension('extensions.faq')
-client.load_extension('extensions.help')
-client.load_extension('extensions.nitrospam')
 
 #strats-and-setups link detection
 @client.event
@@ -51,14 +54,14 @@ async def on_message(message):
 		if not url:
 			if not media:
 				embed=discord.Embed(color=sender.color, description=re.sub(r'@everyone|@here', '',message.content))
-				embed.set_author(name=sender.display_name, icon_url=sender.avatar_url)
+				embed.set_author(name=sender.display_name, icon_url=sender.display_avatar.url)
 				await discussion.send(sender.mention + ' ' + strats.mention + ' is for videos only. Discussion should happen here instead.', embed=embed)
 				await message.delete()
 				return
 
 		# valid media post, post about it in discussion for searching later
 		embed=discord.Embed(color=sender.color, description=re.sub(r'@everyone|@here', '',re.sub(url_re, '', message.content).strip()))
-		embed.set_author(name=sender.display_name, icon_url=sender.avatar_url)
+		embed.set_author(name=sender.display_name, icon_url=sender.display_avatar.url)
 		strat_url = media[0].url if media else url[0][0]
 		embed.add_field(name="Link to video", value=strat_url, inline=False)
 		embed.set_footer(text="New video posted!")
@@ -100,9 +103,6 @@ async def on_message(message):
 async def on_ready():
 	print('ootBot is online')
 	print('----------------')
-
-#update
-config.create_update_timer(client)
 
 #run
 client.run(discord_token)

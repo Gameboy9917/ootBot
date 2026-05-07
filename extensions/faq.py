@@ -261,5 +261,5 @@ tricky to get used to. The easy and slow way is to simply do a neutral roll agai
 the roll.\n Some things you should never do are spam target, or hold forward while targeting. Holding forward will \
 continually make Link face forward, ruining whatever wall angle you were trying to get.')
 
-def setup(bot):
-	bot.add_cog(Faq(bot))
+async def setup(bot):
+	await bot.add_cog(Faq(bot))

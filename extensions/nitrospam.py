@@ -120,5 +120,5 @@ class SpamDetect(commands.Cog):
 			if watchlist[sender]["count"] <= 0:
 				del watchlist[sender]
 
-def setup(bot):
-	bot.add_cog(SpamDetect(bot))
+async def setup(bot):
+	await bot.add_cog(SpamDetect(bot))
