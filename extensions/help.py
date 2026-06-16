@@ -29,6 +29,8 @@ discords:
 !modding      link to the hylian modding server
 !glitchless   link to the glitchless server
 !soh          link to the Ship of Harkinian server
+!3d           link to the OoT3D speedrunning server  
+!2026         link to the OoT (2026) server
 
 faq:
 !beginner     explanation of good categories to start with as a beginner
